@@ -3,92 +3,67 @@
 
 	#include <vector>
 	#include <stdexcept>
-	#include <functional>
-	#include <map>
+	#include <list>
+	#include <unordered_map>
 	#include <string>
 
 	#include "util/size.hpp"
-	#include "util/point.hpp"
 
 	namespace app
 	{
 		namespace ui
 		{
-			namespace display
+			namespace window
 			{
-				std::vector<util::sizeu> get_valid_sizes();
+				std::vector<util::sizeu> get_valid_fullscreen_sizes();
 
-				class invalid_size
+				struct invalid_fullscreen_size
 					: public std::logic_error
 				{
-					public:
-						invalid_size()
-							: logic_error("invalid_size")
-						{
-						}
+					invalid_fullscreen_size()
+						: logic_error("invalid_fullscreen_size")
+					{
+					}
 				};
 
-				namespace event
-				{
-					extern std::function<void(util::sizeu const& new_size)> size_change;
-				}
 				util::sizeu get_size();
 				void set_size(util::sizeu const& new_size);
+				void on_size_change(std::function<bool(util::sizeu const& new_size)> const& handler);
 
-				void swap_buffers();
+
+				bool is_fullscreen();
+				void set_fullscreen(bool new_fullscreen);
+				void on_fullscreen_change(std::function<bool(bool new_fullscreen)> const& handler);
+
+				void update();
 			}
 
 			namespace keyboard
 			{
-				namespace event
-				{
-					extern std::map<std::string, std::function<void()>> key_press;
-					extern std::map<std::string, std::function<void()>> key_release;
-				}
 				bool is_key_pressed(std::string const& key);
+				extern std::unordered_map<std::string, std::list<std::function<void()>>> on_key_press;
+				extern std::unordered_map<std::string, std::list<std::function<void()>>> on_key_release;
 
-				namespace event
-				{
-					extern std::function<void(std::string const& text)> text_input;
-				}
+				extern std::list<std::function<void(std::string const& text)>> on_text_input;
 			}
 
 			namespace mouse
 			{
-				namespace event
-				{
-					extern std::map<std::string, std::function<void()>> button_press;
-					extern std::map<std::string, std::function<void()>> button_release;
-				}
 				bool is_button_pressed(std::string const& button);
+				extern std::unordered_map<std::string, std::unordered_set<util::weak_function<void()>>> on_button_press;
+				extern std::unordered_map<std::string, std::unordered_set<util::weak_function<void()>>> on_button_release;
 
-				namespace event
-				{
-					extern std::function<void(util::pointu const& new_position)> position_change;
-				}
-				util::pointu get_position();
-				void set_position(util::pointu const& new_position);
+				extern std::unordered_set<util::weak_function<void(util::pointu const& position)>> on_enter;
+				extern std::unordered_set<util::weak_function<void(math::vectoru const& displacement)>> on_move;
+				extern std::unordered_set<util::weak_function<void()>> on_leave;
 
-				namespace event
-				{
-					extern std::function<void(float delta)> scroll;
-				}
+				extern std::unordered_set<util::weak_function<void(float delta)>> on_scroll;
 			}
 
-			bool dispatch_event();
-
-			class initializer
-			{
-				public:
-					initializer();
-					initializer(initializer const& that) = delete;
-					initializer& operator=(initializer const& that) = delete;
-					initializer(initializer&& that) = delete;
-					initializer& operator=(initializer&& that) = delete;
-					~initializer();
-			};
-			static initializer const initializer_instance;
+			void dispatch_events();
 		}
 	}
 
-#endif // APP_UI_HPP
+	#include "ui.init.hpp"
+
+#endif
