@@ -10,19 +10,20 @@ namespace app
 		{
 			namespace context
 			{
-				static unsigned initialization_count = 0;
+				static unsigned init_count = 0;
 
-				initializer::initializer()
+				init::init()
 				{
-					if (initialization_count++ == 0)
+					if (init_count++ == 0)
 						if (glewInit() != GLEW_OK)
 							throw std::runtime_error("Failed to initialize GLEW.");
 				}
 
-				initializer::~initializer()
+				init::~init()
 				{
-					if (--initialization_count == 0)
-						; // do nothing, glew does not require deinitialization
+					if (--init_count == 0) {
+						// Do nothing, GLEW does not require any deinitialization.
+					}
 				}
 			}
 		}

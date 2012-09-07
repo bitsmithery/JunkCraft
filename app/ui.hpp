@@ -3,11 +3,12 @@
 
 	#include <vector>
 	#include <stdexcept>
-	#include <list>
-	#include <unordered_map>
 	#include <string>
 
 	#include "util/size.hpp"
+	#include "event/origin.hpp"
+	#include "util/point.hpp"
+	#include "math/vector.hpp"
 
 	namespace app
 	{
@@ -15,7 +16,7 @@
 		{
 			namespace window
 			{
-				std::vector<util::sizeu> get_valid_fullscreen_sizes();
+				std::vector<util::size<unsigned>> get_valid_fullscreen_sizes();
 
 				struct invalid_fullscreen_size
 					: public std::logic_error
@@ -26,38 +27,43 @@
 					}
 				};
 
-				util::sizeu get_size();
+				util::size<unsigned> get_size();
 				void set_size(util::sizeu const& new_size);
-				void on_size_change(std::function<bool(util::sizeu const& new_size)> const& handler);
+				event::origin<util::size<unsigned>>& on_size_change();
 
-
-				bool is_fullscreen();
-				void set_fullscreen(bool new_fullscreen);
-				void on_fullscreen_change(std::function<bool(bool new_fullscreen)> const& handler);
+				enum class state
+				{
+					windowed, fullscreen
+ 				};
+				state get_state();
+				void set_state(state new_state);
+                event::origin<state>& on_state_change();
 
 				void update();
 			}
 
 			namespace keyboard
 			{
-				bool is_key_pressed(std::string const& key);
-				extern std::unordered_map<std::string, std::list<std::function<void()>>> on_key_press;
-				extern std::unordered_map<std::string, std::list<std::function<void()>>> on_key_release;
+				event::origin<std::string>& on_key_press();
+				event::origin<>& on_key_press(std::string const& key);
+				event::origin<std::string>& on_key_release();
+				event::origin<>& on_key_release(std::string const& key);
 
-				extern std::list<std::function<void(std::string const& text)>> on_text_input;
+				event::origin<std::string>& on_text_input();
 			}
 
 			namespace mouse
 			{
-				bool is_button_pressed(std::string const& button);
-				extern std::unordered_map<std::string, std::unordered_set<util::weak_function<void()>>> on_button_press;
-				extern std::unordered_map<std::string, std::unordered_set<util::weak_function<void()>>> on_button_release;
+				event::origin<std::string>& on_button_press();
+				event::origin<>& on_button_press(std::string const& button);
+				event::origin<std::string>& on_button_release();
+				event::origin<>& on_button_release(std::string const& button);
 
-				extern std::unordered_set<util::weak_function<void(util::pointu const& position)>> on_enter;
-				extern std::unordered_set<util::weak_function<void(math::vectoru const& displacement)>> on_move;
-				extern std::unordered_set<util::weak_function<void()>> on_leave;
+				event::origin<util::point<unsigned>>& on_enter();
+				event::origin<math::vector<unsigned>>& on_move();
+				event::origin<>& on_leave();
 
-				extern std::unordered_set<util::weak_function<void(float delta)>> on_scroll;
+				event::origin<math::vector<float>>& on_scroll();
 			}
 
 			void dispatch_events();

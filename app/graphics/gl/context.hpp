@@ -6,8 +6,6 @@
 	#include <gl/glext.h>
 	#include <gl/glu.h>
 
-	#include "../../ui.hpp"
-
 	namespace app
 	{
 		namespace graphics
@@ -16,20 +14,12 @@
 			{
 				namespace context
 				{
-					class initializer
-					{
-						public:
-							initializer();
-							initializer(initializer const& that) = delete;
-							initializer& operator=(initializer const& that) = delete;
-							initializer(initializer&& that) = delete;
-							initializer& operator=(initializer&& that) = delete;
-							~initializer();
-					};
-					static initializer const initializer_instance;
+					// Nothing here. All stuff is in headers.
 				}
 			}
 		}
 	}
+
+	#include "context.init.hpp"
 
 #endif
