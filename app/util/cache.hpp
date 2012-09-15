@@ -6,7 +6,7 @@
 	#include <cstdint>
 	#include <type_traits>
 
-	namespace app
+	namespace bitsmithery
 	{
 		namespace util
 		{

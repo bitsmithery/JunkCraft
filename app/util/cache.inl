@@ -1,6 +1,6 @@
 #include <tuple>
 
-namespace app
+namespace bitsmithery
 {
 	namespace util
 	{

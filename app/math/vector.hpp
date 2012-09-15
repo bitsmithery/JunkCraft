@@ -5,7 +5,7 @@
 
 	#include "math.hpp"
 
-	namespace app
+	namespace bitsmithery
 	{
 		namespace math
 		{

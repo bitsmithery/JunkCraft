@@ -1,6 +1,6 @@
 #include "origin.hpp"
 
-namespace app
+namespace bitsmithery
 {
 	namespace event
 	{

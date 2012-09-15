@@ -5,7 +5,7 @@
 
 	#include "../math/vector.hpp"
 
-	namespace app
+	namespace bitsmithery
 	{
 		namespace util
 		{

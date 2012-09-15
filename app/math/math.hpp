@@ -4,7 +4,7 @@
 	#include <cmath>
     #include <algorithm>
 
-	namespace app
+	namespace bitsmithery
 	{
 		namespace math
 		{

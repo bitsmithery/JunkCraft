@@ -1,6 +1,6 @@
 #include "target.hpp"
 
-namespace app
+namespace bitsmithery
 {
 	namespace event
 	{

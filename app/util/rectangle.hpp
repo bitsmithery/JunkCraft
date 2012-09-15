@@ -6,7 +6,7 @@
 	#include "../math.hpp"
 	#include "size.hpp"
 
-	namespace app
+	namespace bitsmithery
 	{
 		namespace util
 		{

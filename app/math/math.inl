@@ -1,4 +1,4 @@
-namespace app
+namespace bitsmithery
 {
 	namespace math
 	{

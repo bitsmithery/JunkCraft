@@ -1,7 +1,7 @@
 #ifndef APP_UTIL_SIZE_HPP
 	#define APP_UTIL_SIZE_HPP
 
-	namespace app
+	namespace bitsmithery
 	{
 		namespace util
 		{

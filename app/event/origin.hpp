@@ -3,7 +3,7 @@
 
 	#include <unordered_set>
 
-	namespace app
+	namespace bitsmithery
 	{
 		namespace event
 		{
