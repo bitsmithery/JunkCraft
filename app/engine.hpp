@@ -3,9 +3,13 @@
 
 	#include <unordered_set>
 	#include <unordered_map>
-	#include <cstdint>
-	#include <memory>
+	#include <queue>
+	#include <cstddef>
 	#include <tuple>
+
+	#include "util/tuple_wrap.hpp"
+	#include "util/tuple_join.hpp"
+	#include "util/tuple_uniquize.hpp"
 
 	#include "entity.hpp"
 	#include "system.hpp"
@@ -14,28 +18,22 @@
 	{
 		namespace detail
 		{
-			class engine_base
+			template <typename Aspect>
+			struct engine_aspect_map
 			{
-				public:
-					engine_base() = default;
-					engine_base(engine_base const&) = delete;
-					engine_base& operator=(engine_base const&) = delete;
-					~engine_base() = default;
+				typedef std::unordered_map<entity::id, Aspect> type;
+			};
 
-				protected:
-					std::unordered_map<std::uintptr_t, std::shared_ptr<void>> aspect_map_ptrs;
-					entity::id entity_id_seed = reinterpret_cast<entity::id>(this);
-					std::unordered_set<entity::id> entity_ids = {};
+			template <typename... Systems>
+			struct engine_aspect_maps
+			{
+				typedef typename util::tuple_wrap<typename util::tuple_uniquize<typename util::tuple_join<typename Systems::aspects...>::type>::type, engine_aspect_map>::type type;
 			};
 		}
 
 		template <template <typename Engine> class... Systems>
 		class engine
-			: private detail::engine_base
-			, private Systems<engine<Systems...>>...
 		{
-			template <typename Aspect, typename Engine>
-			friend std::shared_ptr<std::unordered_map<entity::id, Aspect>> detail::system_get_aspect_map_ptr(Engine& engine);
 			public:
 				engine();
 				engine(engine const&) = delete;
@@ -43,9 +41,9 @@
 				~engine() = default;
 
 				template <template <typename Engine> class System>
-				System<engine<Systems...>>& system();
+				System<engine>& system();
 				template <template <typename Engine> class System>
-				System<engine<Systems...>> const& system() const;
+				System<engine> const& system() const;
 
 
 
@@ -53,16 +51,23 @@
 //				bool entity_exists(entity::id entity_id);
 //				void entity_delete(entity::id entity_id);
 
-//				template <typename Aspect, typename... AspectConstructorArguments>
-//				void aspect_attach(entity::id entity_id, AspectConstructorArguments&&... aspect_constructor_arguments);
-//				template <typename Aspect>
-//				Aspect* aspect_search(entity::id entity_id);
-//				template <typename Aspect>
-//				void aspect_remove(entity::id entity_id);
+				template <typename Aspect, typename... AspectConstructorArguments>
+				Aspect& aspect_attach(entity::id entity_id, AspectConstructorArguments&&... aspect_constructor_arguments);
+				template <typename Aspect>
+				bool aspect_exists(entity::id entity_id);
+				template <typename Aspect>
+				Aspect& aspect(entity::id entity_id);
+				template <typename Aspect>
+				void aspect_remove(entity::id entity_id);
 
 			private:
-				template <typename Aspect>
-				std::shared_ptr<std::unordered_map<entity::id, Aspect>> aspect_map_ptr();
+				typename detail::engine_aspect_maps<Systems<engine>...>::type aspect_maps;
+				entity::id entity_id_next = 0;
+				std::vector<entity::id> entity_id_buffer = {};
+				std::unordered_set<entity::id> entity_ids = {};
+				std::tuple<Systems<engine>...> systems;
+
+
 		};
 	}
 
