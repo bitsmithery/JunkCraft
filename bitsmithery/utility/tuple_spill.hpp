@@ -5,7 +5,7 @@
 
 	namespace bitsmithery
 	{
-		namespace util
+		namespace utility
 		{
 			template <typename Tuple, template <typename...> class Pit>
 			struct tuple_spill;

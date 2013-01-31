@@ -8,7 +8,7 @@
 
 	namespace bitsmithery
 	{
-		namespace util
+		namespace utility
 		{
 			template <typename Tuple>
 			struct tuple_uniquize;

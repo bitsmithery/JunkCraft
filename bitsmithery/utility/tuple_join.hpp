@@ -5,7 +5,7 @@
 
 	namespace bitsmithery
 	{
-		namespace util
+		namespace utility
 		{
 			template <typename... Tuples>
 			struct tuple_join;

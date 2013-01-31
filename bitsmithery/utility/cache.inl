@@ -2,7 +2,7 @@
 
 namespace bitsmithery
 {
-	namespace util
+	namespace utility
 	{
 		namespace detail
 		{

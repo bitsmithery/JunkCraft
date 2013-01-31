@@ -7,7 +7,7 @@
 
 	namespace bitsmithery
 	{
-		namespace util
+		namespace utility
 		{
 			template <typename Tuple, std::size_t begin, std::size_t end = begin + 1>
 			struct tuple_erase;

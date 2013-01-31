@@ -1,6 +1,6 @@
 namespace bitsmithery
 {
-	namespace util
+	namespace utility
 	{
 		template <typename T>
 		template <typename X, typename Y>

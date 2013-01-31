@@ -7,7 +7,7 @@
 
 	namespace bitsmithery
 	{
-		namespace util
+		namespace utility
 		{
 			template <typename Tuple, typename Target>
 			struct tuple_find;

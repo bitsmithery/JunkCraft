@@ -5,7 +5,7 @@
 
 	namespace bitsmithery
 	{
-		namespace util
+		namespace utility
 		{
 			template <typename Tuple, template <typename TupleElement> class... Modifiers>
 			struct tuple_apply;
