@@ -69,13 +69,16 @@
 			typename std::common_type<L, R>::type cross(vector<L> const& l, vector<R> const& r);
 
 			template <typename T>
-			auto sqr(vector<T> const& v) -> decltype(dot(v, v));
+			auto sqr(vector<T> const& v)
+				-> decltype(dot(v, v));
 
 			template <typename T>
-			auto len(vector<T> const& v) -> decltype(sqrt(sqr(v)));
+			auto len(vector<T> const& v)
+				-> decltype(sqrt(sqr(v)));
 
 			template <typename T>
-			auto unit(vector<T> const& v) -> decltype(v/len(v));
+			auto unit(vector<T> const& v)
+				-> decltype(v/len(v));
 
 			template <typename L, typename R>
 			bool operator==(vector<L> const& l, vector<R> const& r);

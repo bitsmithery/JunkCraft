@@ -11,12 +11,7 @@
 				application& operator=(application const& that) = delete;
 				virtual ~application() = default;
 
-				virtual void run() = 0;
-
-				int result();
-
-			private:
-
+				virtual int run() = 0;
 		};
 	}
 

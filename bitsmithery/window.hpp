@@ -4,7 +4,7 @@
 	#include <string>
 
 	#include "event/origin.hpp"
-	#include "graphics/gl/context.hpp"
+
 
 	namespace bitsmithery
 	{
@@ -13,8 +13,7 @@
 			class window_implementation;
 		}
 
-		class window
-			: public graphics::gl::context
+		class window final
 		{
 			public:
 				window() = default;
@@ -22,7 +21,7 @@
 				window& operator=(window const& that) = delete;
 				virtual ~window() = default;
 
-				std::vector<util::size<unsigned>> get_valid_fullscreen_sizes();
+				static std::vector<utility::size<unsigned>> get_valid_fullscreen_sizes();
 
 				struct invalid_fullscreen_size
 					: public std::logic_error
@@ -33,9 +32,9 @@
 					}
 				};
 
-				util::size<unsigned> get_size();
-				void set_size(util::size<unsigned> const& new_size);
-				event::origin<util::size<unsigned>>& on_size_change();
+				utility::size<unsigned> get_size();
+				void set_size(utility::size<unsigned> const& new_size);
+				event::origin<utility::size<unsigned>>& on_size_change();
 
 				enum class state
 				{
@@ -47,7 +46,7 @@
 
                 std::shared_ptr<mouse> get_mouse_ptr();
                 std::shared_ptr<keyboard> get_keyboard_ptr();
-
+                std::shared_ptr<graphics::renderer> get_renderer_ptr();
 
 			private:
 				std::unique_ptr<detail::window_implementation> implementation;

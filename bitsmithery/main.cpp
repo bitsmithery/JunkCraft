@@ -1,16 +1,10 @@
 #include "core/system.hpp"
 #include "core/engine.hpp"
-
+#include "util/thread_pool.hpp"
 
 #include "application.hpp"
 
-
-
-
-
 int main(int argc, char* argv[])
 {
-	bitsmithery::application application(argc, argv);
-	application.run();
-	return application.result();
+	return bitsmithery::application(argc, argv).run();
 }

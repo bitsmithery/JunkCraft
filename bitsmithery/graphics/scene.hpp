@@ -5,7 +5,7 @@
 	{
 		namespace graphics
 		{
-				// doesn't know how it is rendered. a collection of data
+				// doesn't know how it is rendered. should be declarative without any rendering code
 			class scene
 			{
 

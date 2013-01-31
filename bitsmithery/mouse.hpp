@@ -20,7 +20,7 @@
 				event::origin<std::string>& on_button_release();
 				event::origin<>& on_button_release(std::string const& button);
 
-				event::origin<util::point<unsigned>>& on_enter();
+				event::origin<utility::point<unsigned>>& on_enter();
 				event::origin<math::vector<unsigned>>& on_move();
 				event::origin<>& on_leave();
 

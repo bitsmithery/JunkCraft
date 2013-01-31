@@ -1,11 +1,56 @@
 #include <utility>
 
-#include "system.hpp"
-
 namespace bitsmithery
 {
 	namespace core
 	{
+		namespace detail
+		{
+			template <typename System, typename... Arguments>
+			void system_wrapper_base::step(System& system, engine& engine)
+			{
+				system.step(engine.system_step_argument<Arguments>()...);
+			}
+
+			template <typename System, typename... Arguments>
+			void (*system_wrapper_base::step_select(void (System::*)(Arguments&...)))(System&, engine&)
+			{
+				return &step<System, Arguments...>;
+			}
+
+			template <typename System>
+			class system_wrapper
+				: public system_wrapper_base
+			{
+				public:
+					system_wrapper(System&& system);
+					system_wrapper(system_wrapper const& that) = delete;
+					system_wrapper& operator=(system_wrapper const& that) = delete;
+					virtual ~system_wrapper() override = default;
+
+				private:
+					System system;
+
+					virtual void step(engine& engine) override;
+			};
+
+			template <typename System>
+			system_wrapper<System>::system_wrapper(System&& system)
+				: system(std::forward<System>(system))
+			{}
+
+			template <typename System>
+			void system_wrapper<System>::step(engine& engine)
+			{
+				(*step_select(&System::step))(system, engine);
+			}
+		}
+
+
+
+
+
+
 		namespace detail
 		{
 			template <typename... Arguments>

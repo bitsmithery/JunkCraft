@@ -15,7 +15,9 @@
 				protected:
 					aspect() = default;
 					aspect(aspect const& that) = default;
+					aspect(aspect&& that) = default;
 					aspect& operator=(aspect const& that) = default;
+					aspect& operator=(aspect&& that) = default;
 					~aspect() = default;
 			};
 
