@@ -32,11 +32,6 @@
 					vector& operator=(vector<U> const& that);
 			};
 
-			typedef vector<float> vectorf;
-			typedef vector<double> vectord;
-			typedef vector<int> vectori;
-			typedef vector<unsigned> vectoru;
-
 			template <typename T>
 			vector<T> operator-(vector<T> const& v);
 

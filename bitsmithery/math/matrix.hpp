@@ -52,9 +52,6 @@
 					matrix& scale(T const& factor);
 			};
 
-			typedef matrix<float> matrixf;
-			typedef matrix<double> matrixd;
-
 			template <typename T>
 			matrix<T> operator~(matrix<T> const& m);
 

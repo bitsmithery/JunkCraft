@@ -3,23 +3,22 @@
 
 	#include <string>
 
-	#include "event/origin.hpp"
-
-
 	namespace bitsmithery
 	{
 		namespace detail
 		{
-			class window_implementation;
+			class window_impl;
 		}
 
-		class window final
+		class window
 		{
 			public:
-				window() = default;
+				window();
 				window(window const& that) = delete;
+				window(window&& that);
 				window& operator=(window const& that) = delete;
-				virtual ~window() = default;
+				window& operator=(window&& that);
+				~window();
 
 				static std::vector<utility::size<unsigned>> get_valid_fullscreen_sizes();
 
@@ -49,7 +48,7 @@
                 std::shared_ptr<graphics::renderer> get_renderer_ptr();
 
 			private:
-				std::unique_ptr<detail::window_implementation> implementation;
+				std::unique_ptr<detail::window_impl> impl;
 		};
 	}
 
