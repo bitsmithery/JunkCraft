@@ -43,31 +43,36 @@
 				};
 			}
 
-			template <typename... RelevantMessages>
+
+			template <typename... ReceivableMessages>
 			struct entity_behaviour_fragment
 			{
-				typedef detail::entity_behaviour_fragment_tag entity_behaviour_fragment_tag;
-
 				public:
-					template <typename EntityStateFragment>
-					auto attach()
-						-> typename std::enable_if<is_entity_state_fragment<EntityStateFragment>(), void>::type;
-					template <typename EntityStateFragment>
-					auto has()
-						-> typename std::enable_if<is_entity_state_fragment<EntityStateFragment>(), bool>::type;
-					template <typename EntityStateFragment>
-					auto remove()
-						-> typename std::enable_if<is_entity_state_fragment<EntityStateFragment>(), void>::type;
+					typedef detail::entity_behaviour_fragment_tag entity_behaviour_fragment_tag;
 
-					template <typename EntityBehaviourFragment>
-					auto attach()
-						-> typename std::enable_if<is_entity_behaviour_fragment<EntityBehaviourFragment>(), void>::type;
-					template <typename EntityBehaviourFragment>
-					auto has()
-						-> typename std::enable_if<is_entity_behaviour_fragment<EntityBehaviourFragment>(), bool>::type;
-					template <typename EntityBehaviourFragment>
-					auto remove()
-						-> typename std::enable_if<is_entity_behaviour_fragment<EntityBehaviourFragment>(), void>::type;
+				protected:
+					entity_id const& this_id;
+
+					template <typename BehaviourFragment>
+					auto this_absorb()
+						-> typename std::enable_if<is_entity_behaviour_fragment<BehaviourFragment>(), bool>::type;
+					template <typename BehaviourFragment>
+					auto this_adheres()
+						-> typename std::enable_if<is_entity_behaviour_fragment<BehaviourFragment>(), bool>::type;
+					template <typename BehaviourFragment>
+					auto this_forget()
+						-> typename std::enable_if<is_entity_behaviour_fragment<BehaviourFragment>(), bool>::type;
+
+					template <typename Message>
+					auto send(entity_id receiver_id, Message&& message)
+						-> typename std::enable_if<is_message<Message>(), void>::type;
+					template <typename Message>
+					auto broadcast(Message&& message)
+						-> typename std::enable_if<is_message<Message>(), void>::type;
+
+				private:
+					entity_id this_id_;
+					engine* engine_;
 			};
 
 
@@ -78,7 +83,7 @@
 
 			template <typename Type>
 			struct is_entity_behaviour_fragment<Type, typename Type::entity_behaviour_fragment_tag>
-				: std::integral_constant<bool, std::is_same<typename Type::entity_behaviour_fragment_tag, detail::entity_behaviour_fragment_tag>() && std::is_empty<Type>()>
+				: std::integral_constant<bool, std::is_same<typename Type::entity_behaviour_fragment_tag, detail::entity_behaviour_fragment_tag>()>
 			{};
 		}
 	}
