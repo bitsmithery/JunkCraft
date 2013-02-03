@@ -15,7 +15,7 @@
 				struct entity_behaviour_fragment_tag;
 
 
-				template <typename EntityBehaviourFragment, typename Message>
+				template <typename BehaviourFragment, typename Message>
 				struct entity_behaviour_fragment_has_receive_for_message
 				{
 					private:
@@ -23,7 +23,7 @@
 						typedef int (&no)[2];
 
 						template <typename M, typename... RelevantStateFragments>
-						static auto test_helper(void (EntityBehaviourFragment::*)(M const&, engine&, entity_id, RelevantStateFragments&...))
+						static auto test_helper(void (BehaviourFragment::*)(M const&, engine&, entity_id, RelevantStateFragments&...))
 							-> typename std::enable_if<utility::tuple_all_of<std::tuple<RelevantStateFragments...>, is_entity_state_fragment>::value, yes>::type;
 
 						template <typename M>
@@ -39,7 +39,7 @@
 							-> no;
 
 					public:
-						static bool const value = (sizeof(test<EntityBehaviourFragment>(0)) == sizeof(yes));
+						static bool const value = (sizeof(test<BehaviourFragment>(0)) == sizeof(yes));
 				};
 			}
 
@@ -47,6 +47,27 @@
 			struct entity_behaviour_fragment
 			{
 				typedef detail::entity_behaviour_fragment_tag entity_behaviour_fragment_tag;
+
+				public:
+					template <typename EntityStateFragment>
+					auto attach()
+						-> typename std::enable_if<is_entity_state_fragment<EntityStateFragment>(), void>::type;
+					template <typename EntityStateFragment>
+					auto has()
+						-> typename std::enable_if<is_entity_state_fragment<EntityStateFragment>(), bool>::type;
+					template <typename EntityStateFragment>
+					auto remove()
+						-> typename std::enable_if<is_entity_state_fragment<EntityStateFragment>(), void>::type;
+
+					template <typename EntityBehaviourFragment>
+					auto attach()
+						-> typename std::enable_if<is_entity_behaviour_fragment<EntityBehaviourFragment>(), void>::type;
+					template <typename EntityBehaviourFragment>
+					auto has()
+						-> typename std::enable_if<is_entity_behaviour_fragment<EntityBehaviourFragment>(), bool>::type;
+					template <typename EntityBehaviourFragment>
+					auto remove()
+						-> typename std::enable_if<is_entity_behaviour_fragment<EntityBehaviourFragment>(), void>::type;
 			};
 
 
@@ -57,7 +78,7 @@
 
 			template <typename Type>
 			struct is_entity_behaviour_fragment<Type, typename Type::entity_behaviour_fragment_tag>
-				: std::integral_constant<bool, std::is_same<typename Type::entity_behaviour_fragment_tag, detail::entity_behaviour_fragment_tag>::value && std::is_empty<Type>::value>
+				: std::integral_constant<bool, std::is_same<typename Type::entity_behaviour_fragment_tag, detail::entity_behaviour_fragment_tag>() && std::is_empty<Type>()>
 			{};
 		}
 	}

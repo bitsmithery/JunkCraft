@@ -29,33 +29,33 @@
 
 					template <typename Message>
 					auto send(entity_id receiver_id, Message&& message)
-						-> typename std::enable_if<is_message<Message>::value, void>::type;
+						-> typename std::enable_if<is_message<Message>(), void>::type;
 					template <typename Message>
 					auto broadcast(Message&& message)
-						-> typename std::enable_if<is_message<Message>::value, void>::type;
+						-> typename std::enable_if<is_message<Message>(), void>::type;
 
 					entity_id create_entity();
 					void destroy_entity(entity_id id);
 
 					template <typename EntityStateFragment>
 					auto attach(entity_id id)
-						-> typename std::enable_if<is_entity_state_fragment<EntityStateFragment>::value, void>::type;
+						-> typename std::enable_if<is_entity_state_fragment<EntityStateFragment>(), void>::type;
 					template <typename EntityStateFragment>
 					auto has(entity_id id)
-						-> typename std::enable_if<is_entity_state_fragment<EntityStateFragment>::value, bool>::type;
+						-> typename std::enable_if<is_entity_state_fragment<EntityStateFragment>(), bool>::type;
 					template <typename EntityStateFragment>
 					auto remove(entity_id id)
-						-> typename std::enable_if<is_entity_state_fragment<EntityStateFragment>::value, void>::type;
+						-> typename std::enable_if<is_entity_state_fragment<EntityStateFragment>(), void>::type;
 
 					template <typename EntityBehaviourFragment>
 					auto attach(entity_id id)
-						-> std::enable_if<is_entity_behaviour_fragment<EntityBehaviourFragment>, void>::type;
+						-> typename std::enable_if<is_entity_behaviour_fragment<EntityBehaviourFragment>(), void>::type;
 					template <typename EntityBehaviourFragment>
 					auto has(entity_id id)
-						-> std::enable_if<is_entity_behaviour_fragment<EntityBehaviourFragment>, bool>::type;
+						-> typename std::enable_if<is_entity_behaviour_fragment<EntityBehaviourFragment>(), bool>::type;
 					template <typename EntityBehaviourFragment>
 					auto remove(entity_id id)
-						-> std::enable_if<is_entity_behaviour_fragment<EntityBehaviourFragment>, void>::type;
+						-> typename std::enable_if<is_entity_behaviour_fragment<EntityBehaviourFragment>(), void>::type;
 
 				private:
 

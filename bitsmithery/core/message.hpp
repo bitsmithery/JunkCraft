@@ -12,7 +12,7 @@
 
 			template <typename Type>
 			struct is_message
-			    : std::integral_constant<bool, std::is_base_of<Type, message>::value && !std::is_same<Type, message>::value>
+			    : std::integral_constant<bool, std::is_base_of<Type, message>() && !std::is_same<Type, message>()>
 			{};
 		}
 	}

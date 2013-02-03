@@ -12,7 +12,7 @@
 
 			template <typename Type>
 			struct is_entity_state_fragment
-			    : std::integral_constant<bool, std::is_base_of<Type, entity_state_fragment>::value && !std::is_same<Type, entity_state_fragment>::value && !std::is_empty<Type>::value>
+			    : std::integral_constant<bool, std::is_base_of<Type, entity_state_fragment>() && !std::is_same<Type, entity_state_fragment>() && !std::is_empty<Type>()>
 			{};
 		}
 	}
