@@ -101,7 +101,7 @@ namespace bitsmithery
 			return
 			{
 				 m.s11/d, -m.s01/d, (m.s01*m.s12 - m.s11*m.s02)/d,
-				-m.s10/d,  m.s11/d, (m.s10*m.s02 - m.s00*m.s12)/d
+				-m.s10/d,  m.s00/d, (m.s10*m.s02 - m.s00*m.s12)/d
 			};
 		}
 
