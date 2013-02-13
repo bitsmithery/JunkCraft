@@ -9,59 +9,68 @@
 	{
 		namespace math
 		{
-			template <typename T>
+			template <typename E>
 			class matrix
 			{
 				public:
-					T s00; T s01; T s02;
-					T s10; T s11; T s12;
+					E e00; E e01;
+					E e10; E e11;
+					E e20; E e21;
 
 					matrix() = default;
 					matrix(matrix const& that) = default;
 					matrix& operator=(matrix const& that) = default;
 					matrix(matrix&& that) = default;
 					matrix& operator=(matrix&& that) = default;
+					template <typename TE>
+					matrix(matrix<TE> const& that);
+					template <typename TE>
+					matrix& operator=(matrix<TE> const& that);
 					~matrix() = default;
 
 					template
 					<
-						typename S00, typename S01, typename S02,
-						typename S10, typename S11, typename S12
+						typename E00, typename E01,
+						typename E10, typename E11,
+						typename E20, typename E21
 					>
 					matrix
 					(
-						S00 const& s00, S01 const& s01, S02 const& s02,
-						S10 const& s10, S11 const& s11, S12 const& s12
+						E00 const& e00, E01 const& e01,
+						E10 const& e10, E11 const& e11,
+						E20 const& e20, E21 const& e21
 					);
-
-					template <typename U>
-					matrix(matrix<U> const& that);
-
-					template <typename U>
-					matrix& operator=(matrix<U> const& that);
-
-					static matrix translation(vector<T> const& displacement);
-					matrix& translate(vector<T> const& displacement);
-
-					template <typename Angle>
-					static matrix rotation(Angle const& angle);
-					template <typename Angle>
-					matrix& rotate(Angle const& angle);
-
-					static matrix scaling(T const& factor);
-					matrix& scale(T const& factor);
 			};
 
-			template <typename T>
-			matrix<T> operator~(matrix<T> const& m);
+			template <typename E>
+			matrix<E> operator~(matrix<E> const& m);
 
-			template <typename L, typename R>
-			matrix<typename std::common_type<L, R>::type> operator*(matrix<L> const& l, matrix<R> const& r);
-			template <typename L, typename R>
-			matrix<L>& operator*=(matrix<L>& l, matrix<R> const& r);
+			template <typename LE, typename RE>
+			matrix<typename std::common_type<LE, RE>::type> operator*(matrix<LE> const& l, matrix<RE> const& r);
+			template <typename LE, typename RE>
+			matrix<LE>& operator*=(matrix<LE>& l, matrix<RE> const& r);
 
-			template <typename M, typename V>
-			vector<typename std::common_type<M, V>::type> operator*(matrix<M> const& m, vector<V> const& v);
+			template <typename VE, typename ME>
+			vector<typename std::common_type<VE, ME>::type> operator*(vector<VE> const& v, matrix<ME> const& m);
+			template <typename VE, typename ME>
+			vector<VE>& operator*=(vector<VE>& v, matrix<ME> const& m);
+
+			template <typename ME, typename DE>
+			matrix<ME> translation(vector<DE> const& displacement);
+
+			template <typename ME, typename A>
+			matrix<ME> rotation(A const& angle);
+			template <typename ME, typename A, typename CE>
+			matrix<ME> rotation(A const& angle, vector<CE> const& center);
+
+			template <typename ME, typename F>
+			matrix<ME> scaling(F const& factor);
+			template <typename ME, typename F, typename CE>
+			matrix<ME> scaling(F const& factor, vector<CE> const& center);
+			template <typename ME, typename FE>
+			matrix<ME> scaling(vector<FE> const& factor);
+			template <typename ME, typename FE, typename CE>
+			matrix<ME> scaling(vector<FE> const& factor, vector<CE> const& center);
 		}
 	}
 

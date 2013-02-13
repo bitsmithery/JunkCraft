@@ -2,154 +2,133 @@ namespace bitsmithery
 {
 	namespace math
 	{
-		template <typename T>
-		template <typename X, typename Y>
-		inline
-		vector<T>::vector(X const& x, Y const& y)
-			: x(x), y(y)
-		{}
-
-		template <typename T>
-		template <typename U>
-		inline
-		vector<T>::vector(vector<U> const& that)
+		template <typename E>
+		template <typename TE>
+		vector<E>::vector(vector<TE> const& that)
 			: x(that.x), y(that.y)
 		{}
 
-		template <typename T>
-		template <typename U>
-		inline
-		vector<T>& vector<T>::operator=(vector<U> const& that)
+		template <typename E>
+		template <typename TE>
+		vector<E>& vector<E>::operator=(vector<TE> const& that)
 		{
 			x = that.x; y = that.y;
 			return *this;
 		}
 
-		template <typename T>
-		inline
-		vector<T> operator-(vector<T> const& v)
+		template <typename E>
+		template <typename X, typename Y>
+		vector<E>::vector(X const& x, Y const& y)
+			: x(x), y(y)
+		{}
+
+		template <typename E>
+		vector<E> operator+(vector<E> const& v)
+		{
+			return {+v.x, +v.y};
+		}
+
+		template <typename E>
+		vector<E> operator-(vector<E> const& v)
 		{
 			return {-v.x, -v.y};
 		}
 
-		template <typename L, typename R>
-		inline
-		vector<typename std::common_type<L, R>::type> operator+(vector<L> const& l, vector<R> const& r)
+		template <typename LE, typename RE>
+		vector<typename std::common_type<LE, RE>::type> operator+(vector<LE> const& l, vector<RE> const& r)
 		{
 			return {l.x + r.x, l.y + r.y};
 		}
-		template <typename L, typename R>
-		inline
-		vector<L>& operator+=(vector<L>& l, vector<R> const& r)
+		template <typename LE, typename RE>
+		vector<LE>& operator+=(vector<LE>& l, vector<RE> const& r)
 		{
 			l.x += r.x; l.y += r.y;
 			return l;
 		}
 
-		template <typename L, typename R>
-		inline
-		vector<typename std::common_type<L, R>::type> operator-(vector<L> const& l, vector<R> const& r)
+		template <typename LE, typename RE>
+		vector<typename std::common_type<LE, RE>::type> operator-(vector<LE> const& l, vector<RE> const& r)
 		{
 			return {l.x - r.x, l.y - r.y};
 		}
-		template <typename L, typename R>
-		inline
-		vector<L>& operator-=(vector<L>& l, vector<R> const& r)
+		template <typename LE, typename RE>
+		vector<LE>& operator-=(vector<LE>& l, vector<RE> const& r)
 		{
 			l.x -= r.x; l.y -= r.y;
 			return l;
 		}
 
-		template <typename L, typename R>
-		inline
-		vector<typename std::common_type<L, R>::type> operator*(vector<L> const& l, R const& r)
+		template <typename VE, typename S>
+		vector<typename std::common_type<VE, S>::type> operator*(vector<VE> const& v, S const& s)
 		{
-			return {l.x*r, l.y*r};
+			return {v.x * s, v.y * s};
 		}
-		template <typename L, typename R>
-		inline
-		vector<L>& operator*=(vector<L>& l, R const& r)
+		template <typename VE, typename S>
+		vector<VE>& operator*=(vector<VE>& v, S const& s)
 		{
-			l.x *= r; l.y *= r;
-			return l;
+			v.x *= s; v.y *= s;
+			return v;
 		}
-		template <typename L, typename R>
-		inline
-		vector<typename std::common_type<L, R>::type> operator*(L const& l, vector<R> const& r)
+		template <typename S, typename VE>
+		vector<typename std::common_type<S, VE>::type> operator*(S const& s, vector<VE> const& v)
 		{
-			return {l*r.x, l*r.y};
+			return {s * v.x, s * v.y};
 		}
 
-		template <typename L, typename R>
-		inline
-		vector<typename std::common_type<L, R>::type> operator/(vector<L> const& l, R const& r)
+		template <typename VE, typename S>
+		vector<typename std::common_type<VE, S>::type> operator/(vector<VE> const& v, S const& s)
 		{
-			return {l.x/r, l.y/r};
+			return {v.x * s, v.y * s};
 		}
-		template <typename L, typename R>
-		inline
-		vector<L>& operator/=(vector<L>& l, R const& r)
+		template <typename VE, typename S>
+		vector<VE>& operator/=(vector<VE>& v, S const& s)
 		{
-			l.x /= r; l.y /= r;
-			return l;
+			v.x /= s; v.y /= s;
+			return v;
 		}
 
-		template <typename L, typename R>
-		inline
-		typename std::common_type<L, R>::type dot(vector<L> const& l, vector<R> const& r)
+		template <typename LE, typename RE>
+		typename std::common_type<LE, RE>::type dot(vector<LE> const& l, vector<RE> const& r)
 		{
-			return l.x*r.x + l.y*r.y;
+			return l.x * r.x + l.y * r.y;
 		}
 
-		template <typename L, typename R>
-		inline
-		typename std::common_type<L, R>::type cross(vector<L> const& l, vector<R> const& r)
+		template <typename LE, typename RE>
+		typename std::common_type<LE, RE>::type wedge(vector<LE> const& l, vector<RE> const& r)
 		{
-			return l.x*r.y - l.y*r.x;
+			return l.x * r.y - l.y * r.x;
 		}
 
-		template <typename T>
-		inline
-		auto sqr(vector<T> const& v)
-			-> decltype(dot(v, v))
+		template <typename E>
+		auto sqr_norm(vector<E> const& v)
+			-> decltype(v.x * v.x + v.y * v.y)
 		{
-			return dot(v, v);
+			return v.x * v.x + v.y * v.y;
 		}
 
-		template <typename T>
-		inline
-		auto len(vector<T> const& v)
-			-> decltype(sqrt(sqr(v)))
+		template <typename E>
+		auto norm(vector<E> const& v)
+			-> decltype(sqrt(sqr_norm(v)))
 		{
-			return sqrt(sqr(v));
+			return sqrt(sqr_norm(v));
 		}
 
-		template <typename T>
-		inline
-		auto unit(vector<T> const& v)
-			-> decltype(v/len(v))
+		template <typename E>
+		auto unit(vector<E> const& v)
+			-> decltype(v / norm(v))
 		{
-			return v/len(v);
+			return v / norm(v);
 		}
 
-		template <typename L, typename R>
-		inline
-		bool operator==(vector<L> const& l, vector<R> const& r)
+		template <typename LE, typename RE>
+		bool operator==(vector<LE> const& l, vector<RE> const& r)
 		{
-			return (l.x == r.x) && (l.y == r.y);
+			return l.x == r.x && l.y == r.y;
 		}
-		template <typename L, typename R>
-		inline
-		bool operator!=(vector<L> const& l, vector<R> const& r)
+		template <typename LE, typename RE>
+		bool operator!=(vector<LE> const& l, vector<RE> const& r)
 		{
-			return (l.x != r.x) || (l.y != r.y);
-		}
-
-		template <typename T>
-		inline
-		vector<T> perp(vector<T> const& v)
-		{
-			return vector<T>(-v.y, v.x);
+			return l.x != r.x || l.y != r.y;
 		}
 	}
 }
