@@ -92,8 +92,8 @@ namespace bitsmithery
 		{
 			auto const s = sin(angle), c = cos(angle);
 			return {
-				+c, -s,
-				+s, +c,
+				+c, +s,
+				-s, +c,
 				 0,  0,
 			};
 		}
